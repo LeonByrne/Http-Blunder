@@ -1,0 +1,46 @@
+# current_dir = $(shell pwd)
+
+# make path
+# export MAKE := "C:/PROGRA~1/IMAGIN~1/INTERN~1/msys/bin/make.exe"
+
+# make flag
+MAKEFLAGS += --no-print-directory
+MAKEFLAGS += -s
+
+# compile macro
+CC := gcc
+CXX:= g++
+
+# compile flags
+
+# tool macros
+CFLAGS :=
+CXXFLAGS := -g -lglfw -lGL -lGLEW -O1 # FILL: compile flags
+DBGFLAGS := -g
+COBJFLAGS := $(CFLAGS) -c
+
+OBJCFLAGS := $(CFLAGS) -c
+OBJCXXFLAGS := $(CXXFLAGS) -c
+
+# recursive make and clean
+.PHONY: build-subdirs
+build-subdirs: $(DIRS)
+
+.PHONY: $(DIRS)
+$(DIRS):
+	@$(MAKE) -C $@ all
+	
+.PHONY: clean-subdirs
+clean-subdirs:
+	@for dir in $(DIRS); do \
+		$(MAKE) -C $$dir clean; \
+	done
+
+# dependencies
+%.o: %.c
+	@echo -e "\t" CC $(OBJCFLAGS) $< -o $(OBJ_DEST)/$@
+	@$(CC) $(OBJCFLAGS) $< -o $(OBJ_DEST)/$@
+
+%.o: %.cpp
+	@echo -e "\t" CXX $(OBJCXXFLAGS) $< -o $(OBJ_DEST)/$@
+	@$(CXX) $(OBJCXXFLAGS) $< -o $(OBJ_DEST)/$@
