@@ -13,11 +13,15 @@
 
 #include "Request.h"
 
+// TODO setup some logging. A file to write requests and errors too would be of use.
+
 void worker_thread();
 void handle_request(const Request);
 
+// TODO move these to a separate Utils file
 void send_status(const int, const int);
 void send_msg(const int, const int, const char *, const char *);
+void send_file(const int, const int, const char *);
 void send_page(const int, const char *);
 
 int server_fd;
@@ -97,10 +101,17 @@ void handle_request(Request request)
 		send_status(request.client_fd, 404);
 }
 
+/**
+ * @brief Sends just a status msg as a reply
+ * 
+ * @param client_fd 
+ * @param status 
+ */
 void send_status(const int client_fd, const int status)
 {
-	// TODO have a 
+	// TODO add more status messages
 
+	// TODO, might be best to have this in a function, it'll likely see a lot of reuse.
 	char *statusMsg = NULL;
 	if(status == 404)
 	{
@@ -122,9 +133,37 @@ void send_status(const int client_fd, const int status)
 	send(client_fd, response, strlen(response), 0);
 }
 
-void send_page(const int client_fd, const char *page)
+
+void send_msg(const int client_fd, const int status, const char *msg, const char *msgType)
 {
-	int page_fd = open(page, O_RDONLY);
+	// TODO implement
+}
+
+/**
+ * @brief Sends a file, to the specified host, the content type will be infered from the filetype
+ * 
+ * @param client_fd 
+ * @param status 
+ * @param filename The path of the file
+ */
+void send_file(const int client_fd, const int status, const char *filename)
+{
+	// TODO implement
+}
+
+/**
+ * @brief Sends a webpage to the client.
+ * 
+ * @param client_fd 
+ * @param pagename The path of the page
+ */
+void send_page(const int client_fd, const char *pagename)
+{
+	// TODO accept a status
+
+	// TODO maybe remove, it is the same as sending a file
+
+	int page_fd = open(pagename, O_RDONLY);
 	struct stat page_stat;
 
 	fstat(page_fd, &page_stat);
