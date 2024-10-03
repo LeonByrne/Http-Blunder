@@ -28,7 +28,12 @@ int main()
 
 	WT_add_mapping("POST", "/shutdown", shutdown);
 
-	WT_add_webpage("/test", "resources/test.html");
+	WT_add_webpage("/test", "pages/test.html");
+	WT_add_webpage("/home", "pages/home.html");
+	WT_add_webpage("/WebTangle", "pages/WebTangle.html");
+
+	WT_add_file("/plaintext", "resources/text.txt");
+	WT_add_file("/favicon.ico", "resources/bird.png");
 
 	pthread_mutex_lock(&m);
 	pthread_cond_wait(&s, &m);
